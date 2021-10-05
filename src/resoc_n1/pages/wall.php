@@ -58,7 +58,7 @@
                 <section>
                     <h3>Présentation</h3>
                     <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <?php echo $user['alias']?>
-                        (n° <?php echo $_GET['user_id'] ?>)
+                        n° <?php echo $_GET['user_id'] ?>
                     </p>
                 </section>
             </aside>
