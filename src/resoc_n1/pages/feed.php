@@ -41,7 +41,7 @@
             /**
              * Etape 2: se connecter à la base de donnée
              */
-            $mysqli = new mysqli("localhost:1889", "root", "root", "socialnetwork");
+            $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
             ?>
 
             <aside>
@@ -95,7 +95,11 @@
                  * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
                  * A vous de retrouver comment faire la boucle while de parcours...
                  */
-                ?>                
+                while ($post = $lesInformations->fetch_assoc()){
+
+                
+                ?>       
+                         
                 <article>
                     <h3>
                         <time datetime='2020-02-01 11:12:13' >31 février 2010 à 11h12</time>
@@ -115,6 +119,7 @@
                     </footer>
                 </article>
                 <?php
+                }
                 // et de pas oublier de fermer ici vote while
                 ?>
 
