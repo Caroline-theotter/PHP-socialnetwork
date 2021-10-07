@@ -61,11 +61,7 @@ session_start();
                 <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
                 <section>
                     <h3>Présentation</h3>
-                    <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <?php echo $user['alias']?>
-                        n° <?php echo $_SESSION['connected_id']; 
-
-                        ?>
-                    </p>
+                    <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <?php echo $user['alias']?></p>
                 </section>
             </aside>
 
@@ -87,14 +83,11 @@ if ($_SESSION['connected_id']==$user['id'])
                    $enCoursDeTraitement = isset($_POST['message']); 
                    
 
-
                     if ($enCoursDeTraitement)
                     {
                         $authorId = $_SESSION['connected_id'];
                         $postContent = $_POST['message'];
                         
-
-
                         //Etape 3 : Petite sécurité
                         // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
                         $authorId = intval($mysqli->real_escape_string($authorId));
@@ -121,8 +114,6 @@ if ($_SESSION['connected_id']==$user['id'])
                     }
                     ?>      
                     
-                    
-
                     <form action="wall.php?user_id=<?php echo $_SESSION['connected_id']?>" method="post">
                        
                             <dt><label for='message'>Message</label></dt>
@@ -167,8 +158,6 @@ if ($_SESSION['connected_id']==$user['id'])
                  */
                 while ($post = $lesInformations->fetch_assoc())
                 {
-
-                    //echo "<pre>" . print_r($post, 1) . "</pre>";
                     ?>                
                     <article>
                         <h3>
