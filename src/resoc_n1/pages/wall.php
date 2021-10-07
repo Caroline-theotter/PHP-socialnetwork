@@ -62,10 +62,59 @@ session_start();
                 <section>
                     <h3>Présentation</h3>
                     <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <?php echo $user['alias']?></p>
+   
+                <!-- Ajout formulaire follower -->
+                <?php
+if ($_SESSION['connected_id']!=$user['id']){
+                ?>
+                <form action="wall.php?user_id=<?php echo $userId?>" method="post">
+                    <input type="submit" value="Suivre" name="bouton">
+                </form>
+                <?php
+                 $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+
+                 $enCoursDeTraitement = isset($_POST['bouton']); 
+
+                  if ($enCoursDeTraitement)
+                  {
+                      print_r("Hello 1");
+                      $following_id = $_SESSION['connected_id'];
+                      $followedId = $userId;
+
+                      print_r($userId);
+                      
+                      //Etape 3 : Petite sécurité
+                      // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
+                      $followedId = intval($mysqli->real_escape_string($followedId));
+                      $following_id = $mysqli->real_escape_string($following_id);
+                      //Etape 4 : construction de la requete
+                      $lInstructionSql = "INSERT INTO `followers` "
+                              . "(`id`, `followed_user_id`, `following_user_id`) "
+                              . "VALUES (NULL, "
+                              . "" . $followedId . ", "
+                              . "'" . $following_id . "', "
+                              . "";
+                      //echo $lInstructionSql;
+                      // Etape 5 : execution
+                      $ok = $mysqli->query($lInstructionSql);
+                      if ( ! $ok)
+                      {
+                          echo "Impossible d'ajouter le message: " . $mysqli->error;
+                      } else
+                      {
+                          echo "Message posté";
+                      }
+                  }
+?>
+                <?php
+} 
+?>
                 </section>
             </aside>
 
             <main>
+
+
                 <!-- ///////////////////////////////// -->
                 <?php 
             
