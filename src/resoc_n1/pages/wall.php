@@ -1,7 +1,6 @@
 <?php
 session_start();
 ?>
-
 <!doctype html>
 <html lang="fr">
     <head>
@@ -15,16 +14,16 @@ session_start();
             <img src="resoc.jpg" alt="Logo de notre réseau social"/>
             <nav id="menu">
                 <a href="news.php">Actualités</a>
-                <a href="wall.php?user_id=5">Mur</a>
-                <a href="feed.php?user_id=5">Flux</a>
+                <a href="wall.php?user_id=<?php echo $_SESSION['connected_id']?>">Mur</a>
+                <a href="feed.php?user_id=<?php echo $_SESSION['connected_id']?>">Flux</a>
                 <a href="tags.php?tag_id=1">Mots-clés</a>
             </nav>
             <nav id="user">
                 <a href="#">Profil</a>
                 <ul>
-                    <li><a href="settings.php?user_id=5">Paramètres</a></li>
-                    <li><a href="followers.php?user_id=5">Mes suiveurs</a></li>
-                    <li><a href="subscriptions.php?user_id=5">Mes abonnements</a></li>
+                    <li><a href="settings.php?user_id=<?php echo $_SESSION['connected_id']?>">Paramètres</a></li>
+                    <li><a href="followers.php?user_id=<?php echo $_SESSION['connected_id']?>">Mes suiveurs</a></li>
+                    <li><a href="subscriptions.php?user_id=<?php echo $_SESSION['connected_id']?>">Mes abonnements</a></li>
                 </ul>
 
             </nav>
@@ -39,6 +38,7 @@ session_start();
              * ... mais en résumé c'est une manière de passer des informations à la page en ajoutant des choses dans l'url
              */
             $userId = $_GET['user_id'];
+            print_r('user_id');
             ?>
             <?php
             /**
@@ -62,8 +62,8 @@ session_start();
                 <section>
                     <h3>Présentation</h3>
                     <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <?php echo $user['alias']?>
-                        n° <?php echo $_GET['user_id']; 
-                        print_r($_SESSION);
+                        n° <?php echo $_SESSION['connected_id']; 
+
                         ?>
                     </p>
                 </section>
@@ -74,22 +74,25 @@ session_start();
                 <?php 
             
 
-            if ($_SESSION['connected_id']==$user['id']) 
+if ($_SESSION['connected_id']==$user['id']) 
             {
             ?>
                 <article>
                     <h2>Poster un message</h2>
 
                     <?php
-           
-                   $enCoursDeTraitement = isset($_POST['user_id']); 
+                    
+                    $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+
+                   $enCoursDeTraitement = isset($_POST['message']); 
+                   
 
 
                     if ($enCoursDeTraitement)
                     {
-                        $authorId = $_POST['auteur'];
+                        $authorId = $_SESSION['connected_id'];
                         $postContent = $_POST['message'];
-                        echo "salut je suis passé par ici";
+                        
 
 
                         //Etape 3 : Petite sécurité
@@ -113,14 +116,14 @@ session_start();
                             echo "Impossible d'ajouter le message: " . $mysqli->error;
                         } else
                         {
-                            echo "Message posté en tant que :" . $listAuteurs[$authorId];
+                            echo "Message posté";
                         }
                     }
                     ?>      
                     
                     
 
-                    <form action="wall.php" method="post">
+                    <form action="wall.php?user_id=<?php echo $_SESSION['connected_id']?>" method="post">
                        
                             <dt><label for='message'>Message</label></dt>
                             <dd><textarea name='message'></textarea></dd>
