@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Oct 11, 2021 at 02:37 PM
--- Server version: 5.7.24
--- PHP Version: 7.4.16
+-- Hôte : localhost:8889
+-- Généré le : jeu. 07 oct. 2021 à 13:34
+-- Version du serveur :  5.7.34
+-- Version de PHP : 7.4.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `socialnetwork`
+-- Base de données : `socialnetwork`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `followers`
+-- Structure de la table `followers`
 --
 
 CREATE TABLE `followers` (
@@ -34,28 +34,26 @@ CREATE TABLE `followers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `followers`
+-- Déchargement des données de la table `followers`
 --
 
 INSERT INTO `followers` (`id`, `followed_user_id`, `following_user_id`) VALUES
-(7, 1, 2),
-(8, 1, 3),
-(11, 1, 4),
-(4, 1, 5),
-(10, 1, 6),
-(9, 1, 7),
-(15, 1, 8),
-(5, 2, 5),
-(6, 4, 5),
 (1, 5, 3),
 (2, 5, 6),
 (3, 5, 7),
-(12, 7, 8);
+(4, 1, 5),
+(5, 2, 5),
+(6, 4, 5),
+(7, 1, 2),
+(8, 1, 3),
+(9, 1, 7),
+(10, 1, 6),
+(11, 1, 4);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `likes`
+-- Structure de la table `likes`
 --
 
 CREATE TABLE `likes` (
@@ -65,12 +63,10 @@ CREATE TABLE `likes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `likes`
+-- Déchargement des données de la table `likes`
 --
 
 INSERT INTO `likes` (`id`, `user_id`, `post_id`) VALUES
-(11, 1, 9),
-(12, 2, 9),
 (1, 3, 1),
 (2, 3, 2),
 (3, 3, 3),
@@ -81,14 +77,15 @@ INSERT INTO `likes` (`id`, `user_id`, `post_id`) VALUES
 (8, 3, 8),
 (9, 3, 9),
 (10, 3, 10),
+(11, 1, 9),
+(12, 2, 9),
 (13, 4, 9),
-(14, 5, 9),
-(80, 8, 11);
+(14, 5, 9);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `posts`
+-- Structure de la table `posts`
 --
 
 CREATE TABLE `posts` (
@@ -100,7 +97,7 @@ CREATE TABLE `posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `posts`
+-- Déchargement des données de la table `posts`
 --
 
 INSERT INTO `posts` (`id`, `user_id`, `content`, `created`, `parent_id`) VALUES
@@ -115,13 +112,12 @@ INSERT INTO `posts` (`id`, `user_id`, `content`, `created`, `parent_id`) VALUES
 (9, 1, 'Le #féminisme est un ensemble de mouvements et d\'idées philosophiques qui partagent un but commun : définir, promouvoir et atteindre l\'égalité #politique, économique, culturelle, sociale et juridique entre les femmes et les hommes. Le féminisme a donc pour objectif d\'abolir, dans ces différents domaines, les inégalités homme-femme dont les femmes sont les principales victimes, et ainsi de promouvoir les droits des femmes dans la société civile et dans la vie privée. ', '2020-11-20 18:26:50', NULL),
 (10, 7, 'Le #sport est un ensemble d\'exercices physiques se pratiquant sous forme de jeux individuels ou collectifs pouvant donner lieu à des compétitions. Le sport est un phénomène presque universel dans le temps et dans l\'espace humain. La Grèce antique, la Rome antique, Byzance, l\'Occident médiéval puis moderne, mais aussi l\'Amérique précolombienne ou l\'Asie, sont tous marqués par l\'importance du sport. Certaines périodes sont surtout marquées par des interdits. ', '2020-11-30 18:31:16', NULL),
 (11, 8, 'J\'attends la neige ', '2021-10-07 14:25:29', NULL),
-(12, 8, 'une idée de #jeu ?', '2021-10-07 14:25:59', NULL),
-(13, 8, 'Hello ici ça bounce !', '2021-10-07 15:51:39', NULL);
+(12, 8, 'une idée de #jeu ?', '2021-10-07 14:25:59', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `posts_tags`
+-- Structure de la table `posts_tags`
 --
 
 CREATE TABLE `posts_tags` (
@@ -131,7 +127,7 @@ CREATE TABLE `posts_tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `posts_tags`
+-- Déchargement des données de la table `posts_tags`
 --
 
 INSERT INTO `posts_tags` (`id`, `post_id`, `tag_id`) VALUES
@@ -150,7 +146,7 @@ INSERT INTO `posts_tags` (`id`, `post_id`, `tag_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tags`
+-- Structure de la table `tags`
 --
 
 CREATE TABLE `tags` (
@@ -159,7 +155,7 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tags`
+-- Déchargement des données de la table `tags`
 --
 
 INSERT INTO `tags` (`id`, `label`) VALUES
@@ -176,7 +172,7 @@ INSERT INTO `tags` (`id`, `label`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Structure de la table `users`
 --
 
 CREATE TABLE `users` (
@@ -187,7 +183,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `users`
+-- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `alias`) VALUES
@@ -201,25 +197,11 @@ INSERT INTO `users` (`id`, `email`, `password`, `alias`) VALUES
 (8, 'caro@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Caro');
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `followers`
---
-ALTER TABLE `followers`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UC_follower` (`followed_user_id`,`following_user_id`);
-
---
--- Indexes for table `likes`
---
-ALTER TABLE `likes`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UC_like` (`user_id`,`post_id`);
-
---
--- Indexes for table `posts`
+-- Index pour la table `posts`
 --
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`),
@@ -227,7 +209,7 @@ ALTER TABLE `posts`
   ADD KEY `fk_posts_posts1_idx` (`parent_id`);
 
 --
--- Indexes for table `posts_tags`
+-- Index pour la table `posts_tags`
 --
 ALTER TABLE `posts_tags`
   ADD PRIMARY KEY (`id`),
@@ -235,14 +217,14 @@ ALTER TABLE `posts_tags`
   ADD KEY `fk_posts_has_tags_posts1_idx` (`post_id`);
 
 --
--- Indexes for table `tags`
+-- Index pour la table `tags`
 --
 ALTER TABLE `tags`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `label_UNIQUE` (`label`);
 
 --
--- Indexes for table `users`
+-- Index pour la table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -250,58 +232,46 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `alias_UNIQUE` (`alias`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `followers`
---
-ALTER TABLE `followers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT for table `likes`
---
-ALTER TABLE `likes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
-
---
--- AUTO_INCREMENT for table `posts`
+-- AUTO_INCREMENT pour la table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `posts_tags`
+-- AUTO_INCREMENT pour la table `posts_tags`
 --
 ALTER TABLE `posts_tags`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `tags`
+-- AUTO_INCREMENT pour la table `tags`
 --
 ALTER TABLE `tags`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `posts`
+-- Contraintes pour la table `posts`
 --
 ALTER TABLE `posts`
   ADD CONSTRAINT `fk_posts_posts1` FOREIGN KEY (`parent_id`) REFERENCES `posts` (`id`),
   ADD CONSTRAINT `fk_posts_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `posts_tags`
+-- Contraintes pour la table `posts_tags`
 --
 ALTER TABLE `posts_tags`
   ADD CONSTRAINT `fk_posts_has_tags_posts1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),

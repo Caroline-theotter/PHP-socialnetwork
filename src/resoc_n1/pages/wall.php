@@ -28,119 +28,80 @@ session_start();
 
             </nav>
         </header>
-        <div id="wrapper">
-            <?php
-            /**
-             * Etape 1: Le mur concerne un utilisateur en particulier
-             * La première étape est donc de trouver quel est l'id de l'utilisateur
-             * Celui ci est indiqué en parametre GET de la page sous la forme user_id=...
-             * Documentation : https://www.php.net/manual/fr/reserved.variables.get.php
-             * ... mais en résumé c'est une manière de passer des informations à la page en ajoutant des choses dans l'url
-             */
-            $userId = $_GET['user_id'];
-            print_r('user_id');
-            ?>
-            <?php
-            /**
-             * Etape 2: se connecter à la base de donnée
-             */
-            $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
-            ?>
+            <div id="wrapper">
+                <?php
+                $userId = $_GET['user_id'];
+           
+                $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+                ?>
 
             <aside>
                 <?php
-                /**
-                 * Etape 3: récupérer le nom de l'utilisateur
-                 */
-                $laQuestionEnSql = "SELECT * FROM `users` WHERE id=" . intval($userId);
-                $lesInformations = $mysqli->query($laQuestionEnSql);
-                $user = $lesInformations->fetch_assoc();
-                //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par l'alias et effacer la ligne ci-dessous
-                //echo "<pre>" . print_r($user, 1) . "</pre>";
+                    $laQuestionEnSql = "SELECT * FROM `users` WHERE id=" . intval($userId);
+                    $lesInformations = $mysqli->query($laQuestionEnSql);
+                    $user = $lesInformations->fetch_assoc();
                 ?>
                 <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
                 <section>
                     <h3>Présentation</h3>
                     <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <?php echo $user['alias']?></p>
    
-                <!-- Ajout formulaire follower -->
                 <?php
-if ($_SESSION['connected_id']!=$user['id']){
+                    if ($_SESSION['connected_id']!=$user['id']){
                 ?>
-                <form action="wall.php?user_id=<?php echo $userId?>" method="post">
-                    <input type="submit" value="Suivre" name="bouton">
-                </form>
+                    <form action="wall.php?user_id=<?php echo $userId?>" method="post">
+                        <input type="submit" value="Suivre" name="bouton">
+                    </form>
+
                 <?php
-                 $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+                    $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
 
-                 $enCoursDeTraitement = isset($_POST['bouton']); 
+                    $enCoursDeTraitement = isset($_POST['bouton']); 
 
-                  if ($enCoursDeTraitement)
-                  {
+                        if ($enCoursDeTraitement){
+                            $following_id = $_SESSION['connected_id'];
+                            $followedId = $userId;
+                        
+                            $followedId = intval($mysqli->real_escape_string($followedId));
+                            $following_id = $mysqli->real_escape_string($following_id);
+                        
+                            $lInstructionSql = "INSERT INTO `followers` "
+                                . "(`id`, `followed_user_id`, `following_user_id`) "
+                                . "VALUES (NULL, "
+                                . "" . $followedId . ", "
+                                . "" . $following_id . ")" ;
                     
-                      $following_id = $_SESSION['connected_id'];
-                      $followedId = $userId;
-
-                      
-                      
-                      //Etape 3 : Petite sécurité
-                      // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
-                      $followedId = intval($mysqli->real_escape_string($followedId));
-                      $following_id = $mysqli->real_escape_string($following_id);
-                      //Etape 4 : construction de la requete
-                      $lInstructionSql = "INSERT INTO `followers` "
-                              . "(`id`, `followed_user_id`, `following_user_id`) "
-                              . "VALUES (NULL, "
-                              . "" . $followedId . ", "
-                              . "" . $following_id . ")" ;
-                      //echo $lInstructionSql;
-                      // Etape 5 : execution
-                      $ok = $mysqli->query($lInstructionSql);
-                      if ( ! $ok)
-                      {
-                          echo "Vous suivez déjà " . $user['alias']." !";
-                      } else
-                      {
-                          echo "Bravo ! Vous suivez ". $user['alias']." !";
-                      }
-                  }
-?>
-                <?php
-} 
+                            $ok = $mysqli->query($lInstructionSql);
+                            if ( ! $ok)
+                            {
+                                echo "Vous suivez déjà " . $user['alias']." !";
+                            } else
+                            {
+                                echo "Bravo ! Vous suivez ". $user['alias']." !";
+                            }
+                        }
+                    } 
 ?>
                 </section>
             </aside>
 
             <main>
-
-
-                <!-- ///////////////////////////////// -->
                 <?php 
-            
-
-if ($_SESSION['connected_id']==$user['id']) 
-            {
-            ?>
+                if ($_SESSION['connected_id']==$user['id']){
+                ?>
                 <article>
                     <h2>Poster un message</h2>
-
                     <?php
-                    
                     $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
-
                     $enCoursDeTraitement = isset($_POST['message']); 
                    
-
-                    if ($enCoursDeTraitement)
-                    {
+                    if ($enCoursDeTraitement){
                         $authorId = $_SESSION['connected_id'];
                         $postContent = $_POST['message'];
                         
-                        //Etape 3 : Petite sécurité
-                        // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
                         $authorId = intval($mysqli->real_escape_string($authorId));
                         $postContent = $mysqli->real_escape_string($postContent);
-                        //Etape 4 : construction de la requete
+                        
                         $lInstructionSql = "INSERT INTO `posts` "
                                 . "(`id`, `user_id`, `content`, `created`, `parent_id`) "
                                 . "VALUES (NULL, "
@@ -149,8 +110,7 @@ if ($_SESSION['connected_id']==$user['id'])
                                 . "NOW(), "
                                 . "NULL);"
                                 . "";
-                        //echo $lInstructionSql;
-                        // Etape 5 : execution
+                        
                         $ok = $mysqli->query($lInstructionSql);
                         if ( ! $ok)
                         {
@@ -163,24 +123,17 @@ if ($_SESSION['connected_id']==$user['id'])
                     ?>      
                     
                     <form action="wall.php?user_id=<?php echo $_SESSION['connected_id']?>" method="post">
-                       
-                            <dt><label for='message'>Message</label></dt>
-                            <dd><textarea name='message'></textarea></dd>
+                        <dt><label for='message'>Message</label></dt>
+                        <dd><textarea name='message'></textarea></dd>
                         </dl>
                         <input type='submit'>
                     </form>
                 <?php 
-            }
-            ?>
-
+                }
+                ?>
                 </article>    
 
-                <!-- ///////////////////////////////// -->
-
                 <?php
-                /**
-                 * Etape 3: récupérer tous les messages de l'utilisatrice
-                 */
                 $laQuestionEnSql = "SELECT `posts`.`content`,"
                         . "`posts`.`created`,"
                         . "`users`.`alias` as author_name,  "
@@ -193,38 +146,30 @@ if ($_SESSION['connected_id']==$user['id'])
                         . "LEFT JOIN `likes`      ON `likes`.`post_id`  = `posts`.`id` "
                         . "WHERE `posts`.`user_id`='" . intval($userId) . "' "
                         . "GROUP BY `posts`.`id`"
-                        . "ORDER BY `posts`.`created` DESC  "
-                ;
+                        . "ORDER BY `posts`.`created` DESC  ";
+
                 $lesInformations = $mysqli->query($laQuestionEnSql);
                 if ( ! $lesInformations)
                 {
                     echo("Échec de la requete : " . $mysqli->error);
                 }
 
-                /**
-                 * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
-                 */
-                while ($post = $lesInformations->fetch_assoc())
-                {
-                    ?>                
-                    <article>
-                        <h3>
-                            <time datetime='2020-02-01 11:12:13' ><?php echo $post['created']?></time>
-                        </h3>
+                while ($post = $lesInformations->fetch_assoc()){
+                ?>                
+                <article>
+                    <h3>
+                        <time datetime='2020-02-01 11:12:13' ><?php echo $post['created']?></time>
+                    </h3>
                         <address>par <?php echo $post['author_name']?></address>
-                        <div>
-                            <p><?php echo $post['content']?></p>
-                        </div>                                            
-                        <footer>
-                        
-                            <small>♥ <?php echo $post['like_number']?></small>
-                            <a href="">#<?php echo $post['taglist']?></a>
-                           
-                        </footer>
+                    <div>
+                        <p><?php echo $post['content']?></p>
+                    </div>                                            
+                    <footer>
+                        <small>♥ <?php echo $post['like_number']?></small>
+                        <a href="">#<?php echo $post['taglist']?></a>
+                    </footer>
                     </article>
                 <?php } ?>
-
-
             </main>
         </div>
     </body>

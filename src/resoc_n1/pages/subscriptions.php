@@ -10,7 +10,7 @@ session_start()
         <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
-    <header>
+        <header>
             <img src="resoc.jpg" alt="Logo de notre réseau social"/>
             <nav id="menu">
                 <a href="news.php">Actualités</a>
@@ -25,9 +25,9 @@ session_start()
                     <li><a href="followers.php?user_id=<?php echo $_SESSION['connected_id']?>">Mes suiveurs</a></li>
                     <li><a href="subscriptions.php?user_id=<?php echo $_SESSION['connected_id']?>">Mes abonnements</a></li>
                 </ul>
-
             </nav>
         </header>
+       
         <div id="wrapper">
             <aside>
                 <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
@@ -38,16 +38,15 @@ session_start()
                         n° <?php echo $_GET['user_id'] ?>
                         suit les messages
                     </p>
-
                 </section>
             </aside>
             <main class='contacts'>
                 <?php
-                // Etape 1: récupérer l'id de l'utilisateur
+                
                 $userId = $_GET['user_id'];
-                // Etape 2: se connecter à la base de donnée
+           
                 $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
-                // Etape 3: récupérer le nom de l'utilisateur
+            
                 $laQuestionEnSql = "SELECT `users`.* "
                         . "FROM `followers` "
                         . "LEFT JOIN `users` ON `users`.`id`=`followers`.`followed_user_id` "
@@ -55,10 +54,8 @@ session_start()
                         . "GROUP BY `users`.`id`"
                 ;
                 $lesInformations = $mysqli->query($laQuestionEnSql);
-                // Etape 4: à vous de jouer
-                //@todo: faire la boucle while de parcours des abonnés et mettre les bonnes valeurs ci dessous 
-                while ($user = $lesInformations->fetch_assoc())
-                {
+
+                while ($user = $lesInformations->fetch_assoc()){
                 ?>
                 <article>
                     <img src="user.jpg" alt="blason"/>
