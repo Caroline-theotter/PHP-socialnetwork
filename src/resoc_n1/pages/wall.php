@@ -128,7 +128,7 @@ if ($_SESSION['connected_id']==$user['id'])
                     
                     $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
 
-                   $enCoursDeTraitement = isset($_POST['message']); 
+                    $enCoursDeTraitement = isset($_POST['message']); 
                    
 
                     if ($enCoursDeTraitement)
@@ -184,7 +184,7 @@ if ($_SESSION['connected_id']==$user['id'])
                 $laQuestionEnSql = "SELECT `posts`.`content`,"
                         . "`posts`.`created`,"
                         . "`users`.`alias` as author_name,  "
-                        . "count(`likes`.`id`) as like_number,  "
+                        . "count(DISTINCT `likes`.`id`) as like_number,  "
                         . "GROUP_CONCAT(DISTINCT `tags`.`label`) AS taglist "
                         . "FROM `posts`"
                         . "JOIN `users` ON  `users`.`id`=`posts`.`user_id`"
@@ -216,6 +216,7 @@ if ($_SESSION['connected_id']==$user['id'])
                             <p><?php echo $post['content']?></p>
                         </div>                                            
                         <footer>
+                        
                             <small>♥ <?php echo $post['like_number']?></small>
                             <a href="">#<?php echo $post['taglist']?></a>
                            

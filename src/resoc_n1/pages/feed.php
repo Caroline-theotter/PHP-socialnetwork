@@ -77,7 +77,7 @@ session_start()
                         . "`posts`.`created`,"
                         . "`users`.`alias` as author_name,  "
                         . "`users`.`id`,  "
-                        . "count(`likes`.`id`) as like_number,  "
+                        . "count(DISTINCT `likes`.`id`) as like_number,  "
                         . "GROUP_CONCAT(DISTINCT `tags`.`label`) AS taglist "
                         . "FROM `followers` "
                         . "JOIN `users` ON `users`.`id`=`followers`.`followed_user_id`"
@@ -89,6 +89,7 @@ session_start()
                         . "GROUP BY `posts`.`id`"
                         . "ORDER BY `posts`.`created` DESC  "
                 ;
+                echo ($laQuestionEnSql);
                 $lesInformations = $mysqli->query($laQuestionEnSql);
                 if ( ! $lesInformations)
                 {
@@ -100,6 +101,7 @@ session_start()
                  * A vous de retrouver comment faire la boucle while de parcours...
                  */
                 while ($post = $lesInformations->fetch_assoc()){
+                    print_r($post);
 
                 
                 ?>       
