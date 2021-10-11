@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:8889
--- Généré le : jeu. 07 oct. 2021 à 12:42
--- Version du serveur :  5.7.34
--- Version de PHP : 7.4.21
+-- Host: localhost:8889
+-- Generation Time: Oct 07, 2021 at 01:49 PM
+-- Server version: 5.7.24
+-- PHP Version: 7.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `socialnetwork`
+-- Database: `socialnetwork`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `followers`
+-- Table structure for table `followers`
 --
 
 CREATE TABLE `followers` (
@@ -34,7 +34,7 @@ CREATE TABLE `followers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `followers`
+-- Dumping data for table `followers`
 --
 
 INSERT INTO `followers` (`id`, `followed_user_id`, `following_user_id`) VALUES
@@ -53,7 +53,7 @@ INSERT INTO `followers` (`id`, `followed_user_id`, `following_user_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `likes`
+-- Table structure for table `likes`
 --
 
 CREATE TABLE `likes` (
@@ -63,7 +63,7 @@ CREATE TABLE `likes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `likes`
+-- Dumping data for table `likes`
 --
 
 INSERT INTO `likes` (`id`, `user_id`, `post_id`) VALUES
@@ -85,7 +85,7 @@ INSERT INTO `likes` (`id`, `user_id`, `post_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `posts`
+-- Table structure for table `posts`
 --
 
 CREATE TABLE `posts` (
@@ -97,7 +97,7 @@ CREATE TABLE `posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `posts`
+-- Dumping data for table `posts`
 --
 
 INSERT INTO `posts` (`id`, `user_id`, `content`, `created`, `parent_id`) VALUES
@@ -117,7 +117,7 @@ INSERT INTO `posts` (`id`, `user_id`, `content`, `created`, `parent_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `posts_tags`
+-- Table structure for table `posts_tags`
 --
 
 CREATE TABLE `posts_tags` (
@@ -127,7 +127,7 @@ CREATE TABLE `posts_tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `posts_tags`
+-- Dumping data for table `posts_tags`
 --
 
 INSERT INTO `posts_tags` (`id`, `post_id`, `tag_id`) VALUES
@@ -146,7 +146,7 @@ INSERT INTO `posts_tags` (`id`, `post_id`, `tag_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `tags`
+-- Table structure for table `tags`
 --
 
 CREATE TABLE `tags` (
@@ -155,7 +155,7 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `tags`
+-- Dumping data for table `tags`
 --
 
 INSERT INTO `tags` (`id`, `label`) VALUES
@@ -172,7 +172,7 @@ INSERT INTO `tags` (`id`, `label`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -183,7 +183,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `alias`) VALUES
@@ -197,11 +197,11 @@ INSERT INTO `users` (`id`, `email`, `password`, `alias`) VALUES
 (8, 'caro@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Caro');
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `posts`
+-- Indexes for table `posts`
 --
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`),
@@ -209,7 +209,7 @@ ALTER TABLE `posts`
   ADD KEY `fk_posts_posts1_idx` (`parent_id`);
 
 --
--- Index pour la table `posts_tags`
+-- Indexes for table `posts_tags`
 --
 ALTER TABLE `posts_tags`
   ADD PRIMARY KEY (`id`),
@@ -217,14 +217,14 @@ ALTER TABLE `posts_tags`
   ADD KEY `fk_posts_has_tags_posts1_idx` (`post_id`);
 
 --
--- Index pour la table `tags`
+-- Indexes for table `tags`
 --
 ALTER TABLE `tags`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `label_UNIQUE` (`label`);
 
 --
--- Index pour la table `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -232,46 +232,46 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `alias_UNIQUE` (`alias`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `posts`
+-- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT pour la table `posts_tags`
+-- AUTO_INCREMENT for table `posts_tags`
 --
 ALTER TABLE `posts_tags`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT pour la table `tags`
+-- AUTO_INCREMENT for table `tags`
 --
 ALTER TABLE `tags`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT pour la table `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `posts`
+-- Constraints for table `posts`
 --
 ALTER TABLE `posts`
   ADD CONSTRAINT `fk_posts_posts1` FOREIGN KEY (`parent_id`) REFERENCES `posts` (`id`),
   ADD CONSTRAINT `fk_posts_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
--- Contraintes pour la table `posts_tags`
+-- Constraints for table `posts_tags`
 --
 ALTER TABLE `posts_tags`
   ADD CONSTRAINT `fk_posts_has_tags_posts1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),

@@ -77,11 +77,11 @@ if ($_SESSION['connected_id']!=$user['id']){
 
                   if ($enCoursDeTraitement)
                   {
-                      print_r("Hello 1");
+                    
                       $following_id = $_SESSION['connected_id'];
                       $followedId = $userId;
 
-                      print_r($userId);
+                      
                       
                       //Etape 3 : Petite sécurité
                       // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
@@ -92,17 +92,16 @@ if ($_SESSION['connected_id']!=$user['id']){
                               . "(`id`, `followed_user_id`, `following_user_id`) "
                               . "VALUES (NULL, "
                               . "" . $followedId . ", "
-                              . "'" . $following_id . "', "
-                              . "";
+                              . "" . $following_id . ")" ;
                       //echo $lInstructionSql;
                       // Etape 5 : execution
                       $ok = $mysqli->query($lInstructionSql);
                       if ( ! $ok)
                       {
-                          echo "Impossible d'ajouter le message: " . $mysqli->error;
+                          echo "Vous suivez déjà " . $user['alias']." !";
                       } else
                       {
-                          echo "Message posté";
+                          echo "Bravo ! Vous suivez ". $user['alias']." !";
                       }
                   }
 ?>
