@@ -1,5 +1,8 @@
 <?php
 session_start();
+session_unset();
+session_destroy();
+echo "Vous êtes déconnecté(e)"
 ?>
 <!doctype html>
 <html lang="fr">
@@ -12,7 +15,6 @@ session_start();
     <body>
         <header>
             <img src="resoc.jpg" alt="Logo de notre réseau social"/>
-            
         </header>
 
         <div id="wrapper" >
@@ -60,7 +62,7 @@ session_start();
                         }
                     }
                     ?>                     
-                    <form action="login.php" method="post">
+                    <form action="logout.php" method="post">
                         <input type='hidden'name='???' value='achanger'>
                         <dl>
                             <dt><label for='email'>E-Mail</label></dt>
@@ -68,7 +70,7 @@ session_start();
                             <dt><label for='motpasse'>Mot de passe</label></dt>
                             <dd><input type='password'name='motpasse'></dd>
                         </dl>
-                        <a href='news.php?user_id=<?php echo $_SESSION['connected_id']?>'> <input type='submit'></a>
+                        <input type='submit'>
                     </form>
                     <p>
                         Pas de compte?

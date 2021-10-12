@@ -73,6 +73,7 @@
                         . "`posts`.`created`,"
                         . "`users`.`id`,  "
                         . "`users`.`alias` as author_name,  "
+                        . "posts_tags`.`tag_id`,  "
                         . "count(DISTINCT`likes`.`id`) as like_number,  "
                         . "GROUP_CONCAT(DISTINCT `tags`.`label`) AS taglist "
                         . "FROM `posts_tags` as filter "
@@ -85,6 +86,7 @@
                         . "GROUP BY `posts`.`id`"
                         . "ORDER BY `posts`.`created` DESC  "
                 ;
+                print_r($laQuestionEnSql);
                 $lesInformations = $mysqli->query($laQuestionEnSql);
                 if ( ! $lesInformations)
                 {

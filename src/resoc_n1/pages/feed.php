@@ -10,6 +10,11 @@ session_start()
         <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
+    <?php
+            $userId = $_GET['user_id'];
+           
+            $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+            ?>
     <header>
         <img src="resoc.jpg" alt="Logo de notre réseau social"/>
         <nav id="menu">
@@ -24,6 +29,19 @@ session_start()
                 <li><a href="settings.php?user_id=<?php echo $_SESSION['connected_id']?>">Paramètres</a></li>
                 <li><a href="followers.php?user_id=<?php echo $_SESSION['connected_id']?>">Mes suiveurs</a></li>
                 <li><a href="subscriptions.php?user_id=<?php echo $_SESSION['connected_id']?>">Mes abonnements</a></li>
+                 <?php
+                 $laQuestionEnSql = "SELECT * FROM `users` WHERE id=" . intval($userId);
+                 $lesInformations = $mysqli->query($laQuestionEnSql);
+                 $user = $lesInformations->fetch_assoc();
+                if($user['id']==NULL){
+                    ?>
+                    <li><a href="login.php">Connexion</a></li>
+                    <?php } else if ($_SESSION['connected_id']==$user['id']) { ?> 
+                    <li><a href="logout.php">Déconnexion</a></li>
+                    <?php
+                    }
+                    ?>         
+
             </ul>
         </nav>
     </header>
@@ -128,7 +146,7 @@ session_start()
                             <input type="submit" value="♥" name="bouton_like">
                         </form>
                         <small>♥ <?php echo $post['like_number']?></small>
-                        <a href=""><?php echo $post['taglist']?></a>
+                        <a href="tags.php?taglabel="><?php echo $post['taglist']?></a>
                     </footer>
                 </article>
                 <?php
