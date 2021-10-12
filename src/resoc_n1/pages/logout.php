@@ -62,7 +62,7 @@ echo "Vous êtes déconnecté(e)"
                         }
                     }
                     ?>                     
-                    <form action="logout.php" method="post">
+                    <form action="login.php" method="post">
                         <input type='hidden'name='???' value='achanger'>
                         <dl>
                             <dt><label for='email'>E-Mail</label></dt>
