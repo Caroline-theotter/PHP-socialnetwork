@@ -13,7 +13,7 @@ session_start();
         <header>
             <img src="resoc.jpg" alt="Logo de notre réseau social"/>
             <nav id="menu">
-                <a href="news.php">Actualités</a>
+                <a href="news.php?user_id=<?php echo $_SESSION['connected_id']?>">Actualités</a>
                 <a href="wall.php?user_id=<?php echo $_SESSION['connected_id']?>">Mur</a>
                 <a href="feed.php?user_id=<?php echo $_SESSION['connected_id']?>">Flux</a>
                 <a href="tags.php?tag_id=1">Mots-clés</a>
@@ -31,7 +31,7 @@ session_start();
             <div id="wrapper">
                 <?php
                 $userId = $_GET['user_id'];
-           
+
                 $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
                 ?>
 
@@ -54,8 +54,30 @@ session_start();
                     </form>
 
                 <?php
-                    $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
 
+                    $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+                    $enCoursDeTraitement = isset($_POST['bouton_like']); 
+                        if ($enCoursDeTraitement) {
+                            $liker_id = $_POST['liker_id'];
+                            $post_id = $_POST['post_id'];
+            
+                            $liker_id = intval($mysqli->real_escape_string($liker_id));
+                            $post_id = $mysqli->real_escape_string($post_id);
+                    
+                            $lInstructionSql = "INSERT INTO `likes` "
+                            . "(`id`, `user_id`, `post_id`) "
+                            . "VALUES (NULL, "
+                            . "" . $liker_id . ", "
+                            . "" . $post_id . ")" ;
+                    
+                            $ok = $mysqli->query($lInstructionSql);
+                                if ( ! $ok) {
+                                    echo "Vous avez déjà liké ! ";
+                                } else {
+                                    echo "Bravo vous avez liké ! ";
+                                }
+                        } 
+                         
                     $enCoursDeTraitement = isset($_POST['bouton']); 
 
                         if ($enCoursDeTraitement){
@@ -80,8 +102,9 @@ session_start();
                                 echo "Bravo ! Vous suivez ". $user['alias']." !";
                             }
                         }
-                    } 
-?>
+                    }
+                    ?>
+                
                 </section>
             </aside>
 
@@ -136,6 +159,7 @@ session_start();
                 <?php
                 $laQuestionEnSql = "SELECT `posts`.`content`,"
                         . "`posts`.`created`,"
+                        . "`posts`.`id` as post_identifiant, " 
                         . "`users`.`alias` as author_name,  "
                         . "count(DISTINCT `likes`.`id`) as like_number,  "
                         . "GROUP_CONCAT(DISTINCT `tags`.`label`) AS taglist "
@@ -165,6 +189,11 @@ session_start();
                         <p><?php echo $post['content']?></p>
                     </div>                                            
                     <footer>
+                        <form method="post">
+                            <input type="hidden" name="post_id" value=<?php echo $post['post_identifiant']?>>
+                            <input type="hidden" name="liker_id" value=<?php echo $_SESSION['connected_id']?>>
+                            <input type="submit" value="♥" name="bouton_like">
+                        </form>
                         <small>♥ <?php echo $post['like_number']?></small>
                         <a href="">#<?php echo $post['taglist']?></a>
                     </footer>

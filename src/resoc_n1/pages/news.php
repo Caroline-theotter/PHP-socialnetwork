@@ -13,7 +13,7 @@ session_start()
     <header>
         <img src="resoc.jpg" alt="Logo de notre réseau social"/>
         <nav id="menu">
-            <a href="news.php">Actualités</a>
+            <a href="news.php?user_id=<?php echo $_SESSION['connected_id']?>">Actualités</a>
             <a href="wall.php?user_id=<?php echo $_SESSION['connected_id']?>">Mur</a>
             <a href="feed.php?user_id=<?php echo $_SESSION['connected_id']?>">Flux</a>
             <a href="tags.php?tag_id=1">Mots-clés</a>
@@ -29,7 +29,17 @@ session_start()
     </header>
 
     <div id="wrapper">
+             <?php
+            $userId = $_GET['user_id'];
+           
+            $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+            ?>
         <aside>
+        <?php
+                $laQuestionEnSql = "SELECT * FROM `users` WHERE id=" . intval($userId);
+                $lesInformations = $mysqli->query($laQuestionEnSql);
+                $user = $lesInformations->fetch_assoc();
+                ?>
             <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
             <section>
                 <h3>Présentation</h3>
@@ -40,7 +50,8 @@ session_start()
         
         <main>
         <?php
-        if ($_SESSION['connected_id']!=$user['id']){
+        print_r($user['id']);
+        if ($_SESSION['connected_id']==$user['id']){
             $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
             $enCoursDeTraitement = isset($_POST['bouton_like']); 
             print_r($_POST);
