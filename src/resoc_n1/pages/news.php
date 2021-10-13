@@ -93,7 +93,31 @@ session_start()
                     }
             } 
         } 
+
+        if ($_SESSION['connected_id']==$user['id']){
+            $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
+            $enCoursDeTraitement = isset($_POST['bouton_dislike']); 
+            print_r($_POST);
+            if ($enCoursDeTraitement) {
+                $liker_id = $_POST['liker_id'];
+                $post_id = $_POST['post_id'];
+
+                $liker_id = intval($mysqli->real_escape_string($liker_id));
+                $post_id = $mysqli->real_escape_string($post_id);
         
+                $lInstructionSql = "DELETE FROM `likes` "
+                . "WHERE `user_id`=$liker_id AND `post_id`=$post_id ";
+        
+                $ok = $mysqli->query($lInstructionSql);
+                    if ( ! $ok) {
+                        echo "Vous avez déjà unliké ! ";
+                    } else {
+                        echo "Bravo vous avez unliké ! ";
+                    }
+            } 
+        } 
+
+        print_r($_POST['liker_id']);
         $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
 
         if ($mysqli->connect_errno)
@@ -140,7 +164,8 @@ session_start()
                         <form method="post">
                             <input type="hidden" name="post_id" value=<?php echo $post['post_identifiant']?>>
                             <input type="hidden" name="liker_id" value=<?php echo $_SESSION['connected_id']?>>
-                            <input type="submit" value="♥" name="bouton_like">
+                            <input type="submit" value="💛"" name="bouton_like">
+                            <input type="submit" value="💔" name="bouton_dislike">
                         </form>
                         <small>♥<?php echo $post['like_number']?></small>
                         <a href=""><?php echo $post['taglist']?></a>
