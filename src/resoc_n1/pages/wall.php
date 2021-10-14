@@ -65,12 +65,73 @@ session_start();
    
                 <?php
                     if ($_SESSION['connected_id']!=$user['id']){
-                ?>
-                    <form action="wall.php?user_id=<?php echo $userId?>" method="post">
-                        <input type="submit" value="Suivre" name="bouton">
-                    </form>
-
-                <?php
+                        print_r($_POST["follow"]);
+                        if ($_POST["follow"] == false){
+                            print_r(2);
+                            ?>
+                            <form action="wall.php?user_id=<?php echo $userId?>" method="post">
+                                <input type="submit" value="suivre" name="bouton">
+                                <input type="hidden" value ="false" name="follow">
+                            </form>
+                            <?php 
+                              $enCoursDeTraitement = isset($_POST['bouton']); 
+                    
+                              if ($enCoursDeTraitement){
+                                  $following_id = $_SESSION['connected_id'];
+                                  $followedId = $userId;
+                              
+                                  $followedId = intval($mysqli->real_escape_string($followedId));
+                                  $following_id = $mysqli->real_escape_string($following_id);
+                              
+                                  $lInstructionSql = "INSERT INTO `followers` "
+                                      . "(`id`, `followed_user_id`, `following_user_id`) "
+                                      . "VALUES (NULL, "
+                                      . "" . $followedId . ", "
+                                      . "" . $following_id . ")" ;
+                          
+                                  $ok = $mysqli->query($lInstructionSql);
+                                  if ( ! $ok)
+                                  {
+                                      echo "Vous suivez déjà " . $user['alias']." !";
+                                  } else
+                                  {
+                                      echo "Bravo ! Vous suivez ". $user['alias']." !";
+                                  }
+                                }        
+                        }                            
+                            else {
+                            ?>
+                            <form action="wall.php?user_id=<?php echo $userId?>" method="post">
+                            <input type="submit" value="ne plus suivre" name="bouton">
+                            <input type="hidden" value ="true" name="follow">
+                            </form>
+                            <?php 
+                            $enCoursDeTraitement = isset($_POST['bouton']); 
+                    
+                                    if ($enCoursDeTraitement){
+                                        $following_id = $_SESSION['connected_id'];
+                                        $followedId = $userId;
+                                    
+                                        $followedId = intval($mysqli->real_escape_string($followedId));
+                                        $following_id = $mysqli->real_escape_string($following_id);
+                                    
+                                        $lInstructionSql = "DELETE FROM `followers` "
+                                        . "WHERE `followed_user_id`=$userId AND `following_user_id`=$following_id ";
+                                
+                                        $ok = $mysqli->query($lInstructionSql);
+                                        if ( ! $ok)
+                                        {
+                                            echo "Vous suivez toujours " . $user['alias']." !";
+                                        } else
+                                        {
+                                            echo "Vous ne suivez plus ". $user['alias']." !";
+                                        }
+                                    }
+                            
+                        
+                            }
+                    }
+            
 
                     $mysqli = new mysqli("localhost:8889", "root", "root", "socialnetwork");
                     $enCoursDeTraitement = isset($_POST['bouton_like']); 
@@ -95,31 +156,8 @@ session_start();
                                 }
                         } 
                          
-                    $enCoursDeTraitement = isset($_POST['bouton']); 
-
-                        if ($enCoursDeTraitement){
-                            $following_id = $_SESSION['connected_id'];
-                            $followedId = $userId;
-                        
-                            $followedId = intval($mysqli->real_escape_string($followedId));
-                            $following_id = $mysqli->real_escape_string($following_id);
-                        
-                            $lInstructionSql = "INSERT INTO `followers` "
-                                . "(`id`, `followed_user_id`, `following_user_id`) "
-                                . "VALUES (NULL, "
-                                . "" . $followedId . ", "
-                                . "" . $following_id . ")" ;
+                   
                     
-                            $ok = $mysqli->query($lInstructionSql);
-                            if ( ! $ok)
-                            {
-                                echo "Vous suivez déjà " . $user['alias']." !";
-                            } else
-                            {
-                                echo "Bravo ! Vous suivez ". $user['alias']." !";
-                            }
-                        }
-                    }
                     ?>
                 
                 </section>
