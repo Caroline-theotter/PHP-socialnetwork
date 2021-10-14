@@ -65,21 +65,22 @@ session_start();
    
                 <?php
                     if ($_SESSION['connected_id']!=$user['id']){
-                        print_r($_POST["follow"]);
-                        if ($_POST["follow"] == false){
-                            print_r(2);
+                        $followedRequest = "SELECT FROM `followers` "
+                        . "WHERE `followed_user_id`=$userId AND `following_user_id`=$following_id ";
+                        $followedReturn = $mysqli->query($followedRequest);
+                        if ($followedReturn == NULL){
                             ?>
                             <form action="wall.php?user_id=<?php echo $userId?>" method="post">
                                 <input type="submit" value="suivre" name="bouton">
                                 <input type="hidden" value ="false" name="follow">
                             </form>
+
                             <?php 
                               $enCoursDeTraitement = isset($_POST['bouton']); 
                     
                               if ($enCoursDeTraitement){
                                   $following_id = $_SESSION['connected_id'];
                                   $followedId = $userId;
-                              
                                   $followedId = intval($mysqli->real_escape_string($followedId));
                                   $following_id = $mysqli->real_escape_string($following_id);
                               
@@ -100,13 +101,13 @@ session_start();
                                 }        
                         }                            
                             else {
-                            ?>
-                            <form action="wall.php?user_id=<?php echo $userId?>" method="post">
-                            <input type="submit" value="ne plus suivre" name="bouton">
-                            <input type="hidden" value ="true" name="follow">
-                            </form>
-                            <?php 
-                            $enCoursDeTraitement = isset($_POST['bouton']); 
+                                ?>
+                                <form action="wall.php?user_id=<?php echo $userId?>" method="post">
+                                <input type="submit" value="ne plus suivre" name="bouton">
+                                <input type="hidden" value ="true" name="follow">
+                                </form>
+                                <?php 
+                                    $enCoursDeTraitement = isset($_POST['bouton']); 
                     
                                     if ($enCoursDeTraitement){
                                         $following_id = $_SESSION['connected_id'];
@@ -127,8 +128,6 @@ session_start();
                                             echo "Vous ne suivez plus ". $user['alias']." !";
                                         }
                                     }
-                            
-                        
                             }
                     }
             
